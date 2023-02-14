@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Search from "./components/search/Search";
+import Search from "./Image/components/search/Search";
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
