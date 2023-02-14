@@ -62,7 +62,7 @@ class Search extends Component {
                         margin: '30px',
                         boxSizing: 'border-box',
                         border: 'none',
-                        backgroundColor: '#111111',
+                        backgroundColor: '#393b3b',
                         color: 'white',
                         borderRadius: '4px'
                     }}
