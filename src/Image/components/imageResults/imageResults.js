@@ -27,6 +27,7 @@ class ImageResults extends Component{
                 <GridList cols={4}>
                 {  images.map(img=>(
                         <GridTile
+                        style={{paddin: '200x'}} 
                         title={img.tags}
                         key={img.id}
                         actionIcon={
@@ -35,7 +36,7 @@ class ImageResults extends Component{
                             </IconButton>
                         }
                         >
-                        <img src={img.largeImageURL} alt="" />
+                        <img src={img.largeImageURL} alt=""  />
                         </GridTile>
                     ))
                 }
@@ -57,7 +58,7 @@ class ImageResults extends Component{
             open={this.state.open}
             onRequestClose={this.handleClose}
             >
-            <img src={this.state.currentImg} alt="" style={{width:'100%'}} />
+            <img src={this.state.currentImg} alt="" style={{width:'100%', margin: '10px'}} />
             </Dialog>
             </div>
         )

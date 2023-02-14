@@ -56,12 +56,19 @@ class Search extends Component {
                 <input type="text"
                     style=
                     {{
-
-
+                        width: '70%',
+                        padding: '12px 20px',
+                        alignItems: "center",
+                        margin: '30px',
+                        boxSizing: 'border-box',
+                        border: 'none',
+                        backgroundColor: '#111111',
+                        color: 'white',
+                        borderRadius: '4px'
                     }}
                     placeholder="Search for images"
                     name="searchText"
-                    value={this.state.searchText}
+                    value={this.state.searchText }
                     onChange={this.onTextChange}
                 />
                 <br />
