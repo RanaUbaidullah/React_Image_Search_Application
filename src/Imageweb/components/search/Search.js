@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ImageResults from "../imageResults/imageResults";
-
+import search from "./search.css"
 const Search = () => {
     const [searchText, setSearchText] = useState('nature');
     const [images, setImages] = useState([]);
     const [totalHits, setTotalHits] = useState(0);
-    const [perPage] = useState(30);
+    const [perPage] = useState(80);
     const [currentPage, setCurrentPage] = useState(1);
     const apiUrl = 'https://pixabay.com/api';
     const apiKey = '32821962-f14d135f63351ff53eed6ffe6';
