@@ -1,34 +1,56 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ImageResults from "../imageResults/imageResults";
-class Search extends Component {
-    state = {
-        searchText: '',
-        apiUrl: 'https://pixabay.com/api',
-        apiKey: '17241914-90da7b93c0ccceb734849dcd1',
-        images: []
+
+const Search = () => {
+    const [searchText, setSearchText] = useState('nature');
+    const [images, setImages] = useState([]);
+    const [totalHits, setTotalHits] = useState(0);
+    const [perPage] = useState(30);
+    const [currentPage, setCurrentPage] = useState(1);
+    const apiUrl = 'https://pixabay.com/api';
+    const apiKey = '32821962-f14d135f63351ff53eed6ffe6';
+
+    // Function to fetch images from the API
+    const fetchImages = () => {
+        axios
+            .get(
+                `${apiUrl}/?key=${apiKey}&q=${searchText}&image_type=photo&safesearch=true&page=${currentPage}&per_page=${perPage}`
+            )
+            .then(res => {
+                setImages(res.data.hits);
+                setTotalHits(res.data.totalHits);
+            })
+            .catch(err => console.log(err));
     };
-    onTextChange = (e) => {
+
+    // Handle search input change
+    const handleTextChange = (e) => {
         const val = e.target.value;
-        this.setState({ [e.target.name]: val }, () => {
-            if (val === '') {
-                this.setState({ images: [] });
-            }
-            else {
-                axios
-                    .get(
-                        `${this.state.apiUrl}/?key=${this.state.apiKey}&q=${this.state.searchText
-                        }&image_type=photo&safesearch=true`
-                    )
-                    .then(res => this.setState({ images: res.data.hits }))
-                    .catch(err => console.log(err));
-            }
-        });
+        setSearchText(val);
+        setCurrentPage(1);
+        if (val === '') {
+            setImages([]);
+        } else {
+            fetchImages();
+        }
     };
-    render() {
-        console.log(this.state.images);
-        return (
-            <div>
+
+    // Handle pagination
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    useEffect(() => {
+        if (searchText !== '') {
+            fetchImages();
+        }
+    }, [searchText, currentPage, perPage]);
+
+    const totalPages = Math.ceil(totalHits / perPage);
+
+    return (
+        <div>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     <a className="navbar-brand" href="/">Navbar</a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="/navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,32 +75,50 @@ class Search extends Component {
                         </form>
                     </div>
                 </nav>
-                <input type="text"
-                    style=
-                    {{
-                        width: '70%',
-                        padding: '12px 20px',
-                        alignItems: "center",
-                        margin: '30px',
-                        boxSizing: 'border-box',
-                        border: 'none',
-                        backgroundColor: '#393b3b',
-                        color: 'white',
-                        borderRadius: '4px'
-                    }}
-                    placeholder="Search for images"
-                    name="searchText"
-                    value={this.state.searchText }
-                    onChange={this.onTextChange}
-                />
-                <br />
-                {this.state.images.length > 0 ? (<ImageResults images={this.state.images} />) : null}
-            </div>
-
-        )
-    }
-}
-
-
+            <input
+                type="text"
+                style={{
+                    width: '70%',
+                    padding: '12px 20px',
+                    alignItems: "center",
+                    margin: '30px',
+                    boxSizing: 'border-box',
+                    border: 'none',
+                    backgroundColor: '#393b3b',
+                    color: 'white',
+                    borderRadius: '4px'
+                }}
+                placeholder="Search for images"
+                value={searchText}
+                onChange={handleTextChange}
+            />
+            <br />
+            {images.length > 0 ? (
+                <div>
+                    <ImageResults images={images} />
+                    {/* Pagination controls */}
+                    <div className="pagination">
+                        {Array.from({ length: totalPages }, (_, i) => 
+                        { 
+                            // console.log(first)
+                            return(
+                                <button
+                                    key={i + 1}
+                                    onClick={() => handlePageChange(i + 1)}
+                                    className={i + 1 === currentPage ? 'active' : ''}
+                                >
+                                    {i + 1}
+                                </button>
+                            )
+                        }
+                        )}
+                    </div>
+                </div>
+            ) : null}
+        </div>
+    );
+};
 
 export default Search;
+
+          
